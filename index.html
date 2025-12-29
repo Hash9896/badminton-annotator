@@ -6344,17 +6344,67 @@
             // Get zone from coordinates
             const zone = getZoneFromCoords(x, y);
             const player = y < NET_Y ? 'P2' : 'P1';
-            
-            // Validate landing zone
+
+            // SERVE FLOW: Two-click (FROM zone then TO zone)
+            if (isServing) {
+                // First click: Select FROM zone (server position)
+                if (!selectedFromZone) {
+                    // Validate: must be on server's side
+                    const serverSide = currentServer;
+                    if (player !== serverSide) {
+                        showToast({ name: 'Click on server\'s side' }, false);
+                        return;
+                    }
+                    // Validate: zones 1-4 only for serve starting position
+                    const zoneNum = parseInt(zone.replace(/[ab]/g, ''));
+                    if (isNaN(zoneNum) || zoneNum < 1 || zoneNum > 4) {
+                        showToast({ name: 'Serve from zones 1-4' }, false);
+                        return;
+                    }
+
+                    // Set FROM zone and coordinates
+                    selectedFromZone = zone;
+                    fromCoords = { x, y };
+                    fromMarker = { x: pixelX, y: pixelY };
+
+                    // Update display
+                    document.getElementById('fromZoneDisplay').textContent = formatZoneName(zone);
+                    document.getElementById('fromZoneDisplay').classList.remove('pending');
+                    document.getElementById('fromCoordsDisplay').textContent = `(${x.toFixed(1)}m, ${y.toFixed(1)}m)`;
+                    document.getElementById('fromCoordsDisplay').style.display = 'inline';
+                    document.getElementById('toZoneDisplay').textContent = 'Click serve landing...';
+                    document.getElementById('toZoneDisplay').classList.add('pending');
+
+                    // Redraw overlay with FROM marker
+                    drawCourtOverlay();
+                    return;
+                }
+
+                // Second click: Select TO zone (serve landing)
+                // Validate: must be on opponent's side
+                const opponentSide = currentServer === 'P1' ? 'P2' : 'P1';
+                if (player !== opponentSide) {
+                    showToast({ name: 'Click on opponent\'s side' }, false);
+                    return;
+                }
+
+                // Store coordinates and process serve landing
+                toCoords = { x, y };
+                toMarker = { x: pixelX, y: pixelY };
+                processCanvasLandingZone(zone, player, x, y, pixelX, pixelY);
+                return;
+            }
+
+            // REGULAR SHOT FLOW: Validate landing zone
             if (!isValidLandingZone(zone, player)) {
                 showToast({ name: 'Invalid landing zone' }, false);
                 return;
             }
-            
+
             // Store coordinates and process landing
             toCoords = { x, y };
             toMarker = { x: pixelX, y: pixelY };
-            
+
             // Process the landing zone with coordinates
             processCanvasLandingZone(zone, player, x, y, pixelX, pixelY);
         }
