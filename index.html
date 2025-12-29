@@ -6055,11 +6055,14 @@
                 return 'serve_middle';
             }
 
-            // Determine if cross-court (FH↔BH side change)
-            // Odd zones = FH side, Even zones = BH side
+            // Determine if cross-court
+            // Odd zones (1,3,5) = FH side, Even zones (2,4,6) = BH side
+            // Since players face each other: P1's FH faces P2's BH and vice versa
+            // CROSS = same parity (odd→odd or even→even) - shuttle crosses diagonally
+            // STRAIGHT = different parity (odd→even or even→odd) - shuttle goes straight
             const fromFH = (fromN % 2 === 1);
             const toFH = (toN % 2 === 1);
-            const isCross = (fromFH !== toFH);
+            const isCross = (fromFH === toFH);
             const crossSuffix = isCross ? '_cross' : '';
 
             // Get zone categories: 1-2 = Front, 3-4 = Mid, 5-6 = Back
@@ -6072,13 +6075,31 @@
             const fromCat = getCategory(fromN);
             const toCat = getCategory(toN);
 
+            // Determine stroke prefix based on FROM zone
+            // Odd zones (1,3,5) = Forehand side → forehand_ or overhead_ (for zone 5)
+            // Even zones (2,4,6) = Backhand side → backhand_
+            // Zone 5 (Back FH): overhead_ (overhead forehand)
+            // Zone 6 (Back BH): overhead_ by default (round-the-head), backhand_ if zone6Mode === 'backhand'
+            let strokePrefix = '';
+            if (fromCat === 'back') {
+                // Back zones: overhead or backhand
+                if (fromN === 6 && zone6Mode === 'backhand') {
+                    strokePrefix = 'backhand_';
+                } else {
+                    strokePrefix = 'overhead_';
+                }
+            } else {
+                // Front/Mid zones: forehand or backhand based on FH/BH side
+                strokePrefix = fromFH ? 'forehand_' : 'backhand_';
+            }
+
             let baseShot = 'unknown';
 
             // FROM FRONT (Zones 1, 2)
             if (fromCat === 'front') {
                 if (toCat === 'front') {
                     // Net shots: dribble (if 'D' pressed) or netkeep (default)
-                    // Only straight shots (1→1, 2→2) can be dribble
+                    // Only straight shots can be dribble
                     if (!isCross && dribbleMode) {
                         baseShot = 'dribble';
                     } else {
@@ -6093,7 +6114,7 @@
             // FROM MID (Zones 3, 4)
             else if (fromCat === 'mid') {
                 if (toCat === 'front') {
-                    baseShot = 'block';
+                    baseShot = 'defense';  // Changed from 'block' to 'defense'
                 } else if (toCat === 'mid') {
                     baseShot = 'drive';
                 } else { // back
@@ -6102,31 +6123,22 @@
             }
             // FROM BACK (Zones 5, 6)
             else { // back
-                // Zone 6 (Back BH) has special handling for overhead vs backhand mode
-                const isZone6 = (fromN === 6);
-                const useBackhand = isZone6 && zone6Mode === 'backhand';
-                const bhPrefix = useBackhand ? 'bh' : '';
-
                 if (toCat === 'front') {
-                    // Drop shot, pulldrop if trajectory is downward
-                    if (trajectory === -1) {
-                        baseShot = bhPrefix + 'pulldrop';
+                    // Drop shot; pulldrop if trajectory is flat (0)
+                    if (trajectory === 0) {
+                        baseShot = 'pulldrop';
                     } else {
-                        baseShot = bhPrefix + 'drop';
+                        baseShot = 'drop';
                     }
                 } else if (toCat === 'mid') {
-                    // Smash, halfsmash if trajectory is flat
-                    if (trajectory === 0) {
-                        baseShot = bhPrefix + 'halfsmash';
-                    } else {
-                        baseShot = bhPrefix + 'smash';
-                    }
+                    // Smash (removed halfsmash variation)
+                    baseShot = 'smash';
                 } else { // back
-                    baseShot = bhPrefix + 'clear';
+                    baseShot = 'clear';
                 }
             }
 
-            return baseShot + crossSuffix;
+            return strokePrefix + baseShot + crossSuffix;
         }
 
         // Reset shot modifier states after each shot is recorded
