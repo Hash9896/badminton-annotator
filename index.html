@@ -104,6 +104,119 @@
             border-radius: 3px;
         }
 
+        /* Custom Video Controls */
+        .court-video-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #2c3e50;
+            border-radius: 0 0 8px 8px;
+            margin-top: -4px;
+        }
+
+        .court-video-controls .ctrl-btn {
+            background: #3498db;
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .court-video-controls .ctrl-btn:hover {
+            background: #2980b9;
+        }
+
+        .court-video-controls .video-seek {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #4a5568;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .court-video-controls .video-seek::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .court-video-controls .video-seek::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .court-video-controls .time-display {
+            color: #ecf0f1;
+            font-size: 12px;
+            font-family: monospace;
+            min-width: 90px;
+        }
+
+        .court-video-controls .speed-select {
+            background: #34495e;
+            color: #ecf0f1;
+            border: 1px solid #4a5568;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .court-video-controls .fullscreen-btn {
+            margin-left: auto;
+        }
+
+        /* Shot Tags Overlay */
+        /* Shot Toast - Brief notification for each shot */
+        .shot-toast {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            text-align: left;
+            min-width: 120px;
+        }
+
+        .shot-toast.visible {
+            opacity: 1;
+        }
+
+        .shot-toast .toast-shot-num {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .shot-toast .toast-shot-name {
+            font-size: 20px;
+        }
+
         .info-panel {
             width: 100%;
             display: flex;
@@ -138,6 +251,9 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
 
         .tag-item {
@@ -239,6 +355,15 @@
 
         .btn-warning:hover {
             background: #e67e22;
+        }
+
+        .btn-info {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #2980b9;
         }
 
         .file-input-wrapper {
@@ -907,6 +1032,92 @@
             font-weight: 600;
         }
 
+        /* Court Help Modal Styles */
+        .court-help-body {
+            padding: 10px 0;
+        }
+
+        .help-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .help-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .help-section h3 {
+            color: #2c3e50;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .help-section ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .help-section ol li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .help-shortcuts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .help-shortcuts-table td {
+            padding: 6px 10px;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .help-shortcuts-table td:first-child {
+            width: 100px;
+            text-align: center;
+        }
+
+        .help-shortcuts-table kbd {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        .help-zones-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .help-zone {
+            background: #f0f4f8;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .help-zone span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            margin-right: 6px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
         /* Technical Labels Styles */
         .technical-labels-grid {
             display: grid;
@@ -1124,32 +1335,137 @@
 
         .court-workspace {
             display: grid;
-            grid-template-columns: minmax(300px, 1fr) 400px 280px;
+            grid-template-columns: 1fr 300px;
             gap: 15px;
             align-items: start;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
         .court-left-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
         }
 
         .court-center-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            min-width: 380px;
+            display: none; /* Hidden - court map moved to collapsible */
         }
 
         .court-right-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
             max-height: calc(100vh - 100px);
             overflow-y: auto;
+        }
+
+        /* Compact Shot Info Bar */
+        .compact-shot-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #2c3e50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+
+        .compact-shot-bar .shot-segment {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .compact-shot-bar .segment-label {
+            opacity: 0.7;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .compact-shot-bar .segment-value {
+            background: rgba(255,255,255,0.15);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .compact-shot-bar .segment-value.pending {
+            opacity: 0.5;
+        }
+
+        .compact-shot-bar .traj-buttons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .compact-shot-bar .traj-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .compact-shot-bar .traj-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .compact-shot-bar .traj-btn.active {
+            background: #e67e22;
+            border-color: #e67e22;
+        }
+
+        .compact-shot-bar .shot-type-display {
+            background: #27ae60;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Collapsible Court Map */
+        .court-map-collapsible {
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .court-map-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: #34495e;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .court-map-toggle:hover {
+            background: #2c3e50;
+        }
+
+        .court-map-toggle .toggle-icon {
+            transition: transform 0.2s;
+        }
+
+        .court-map-collapsible.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .court-map-content {
+            display: none;
+            padding: 10px;
+        }
+
+        .court-map-collapsible.expanded .court-map-content {
+            display: block;
         }
 
         .match-setup-panel {
@@ -1543,6 +1859,33 @@
             padding: 15px;
             max-height: 400px;
             overflow-y: auto;
+        }
+
+        .rally-log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            position: sticky;
+            top: 0;
+            background: #f8f9fa;
+            padding-bottom: 5px;
+            z-index: 1;
+        }
+
+        .rally-log-header h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .rally-log-header select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 12px;
+            background: white;
+            cursor: pointer;
         }
 
         .rally-log-panel h3 {
@@ -2424,38 +2767,84 @@
                     </div>
 
                     <div class="video-section" style="position: relative;">
-                        <div class="video-container" style="position: relative;">
-                            <video id="courtVideoPlayer" controls preload="metadata">
+                        <div class="video-container" id="courtVideoContainer" style="position: relative;">
+                            <video id="courtVideoPlayer" preload="metadata">
                                 Your browser does not support the video tag.
                             </video>
-                            
+
                             <!-- Court Overlay Canvas (for drawing court lines and markers) -->
                             <canvas id="courtOverlayCanvas" class="court-overlay-canvas"></canvas>
-                            
+
                             <!-- Calibration Canvas (for clicking points) -->
                             <canvas id="calibrationCanvas" class="calibration-canvas" style="display: none;"></canvas>
-                            
+
                             <!-- Current point indicator on video during calibration -->
                             <div class="calibration-current-indicator" id="calibrationCurrentIndicator">
                                 Click: Point 1 — P2 Back-Left
                             </div>
-                            
+
                             <!-- Coordinate Display (shown when hovering in canvas mode) -->
                             <div id="coordDisplay" class="coord-display" style="display: none;">
                                 Position: <span class="coord-value" id="coordValue">(0.0, 0.0)</span>
                                 <span class="zone-info" id="zoneInfo">Zone: -</span>
                             </div>
-                            
+
+                            <!-- Shot Toast Overlay (brief notification for each shot) -->
+                            <div class="shot-toast" id="shotToast"></div>
+
                             <div class="video-info">
                                 <div class="video-info-left">
                                     <div>Frame: <span id="courtFrameNumber">0</span></div>
                                     <div>Time: <span id="courtCurrentTime">0.00</span>s</div>
                                 </div>
                                 <div class="frame-controls">
-                                    <span>← →: ±1</span>
+                                    <span>↑↓→: Traj</span>
                                     <span>c/v: ±10</span>
-                                    <span>0: +400</span>
+                                    <span>&lt;&gt;: Tags</span>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Video Controls (outside canvas) -->
+                        <div class="court-video-controls" id="courtVideoControls">
+                            <button class="ctrl-btn play-pause" id="courtPlayPauseBtn" onclick="toggleCourtPlayPause()">
+                                <span class="play-icon">▶</span>
+                                <span class="pause-icon" style="display:none;">❚❚</span>
+                            </button>
+                            <input type="range" class="video-seek" id="courtVideoSeek" min="0" max="100" value="0" step="0.1">
+                            <span class="time-display" id="courtTimeDisplay">0:00 / 0:00</span>
+                            <select class="speed-select" id="courtSpeedSelect" onchange="setCourtPlaybackSpeed()">
+                                <option value="0.25">0.25x</option>
+                                <option value="0.5">0.5x</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                        </div>
+
+                        <!-- Compact Shot Info Bar -->
+                        <div class="compact-shot-bar" id="compactShotBar">
+                            <div class="shot-segment">
+                                <span class="segment-label">From:</span>
+                                <span class="segment-value pending" id="compactFromZone">-</span>
+                            </div>
+                            <div class="shot-segment">
+                                <span class="segment-label">To:</span>
+                                <span class="segment-value pending" id="compactToZone">-</span>
+                            </div>
+                            <div class="shot-segment">
+                                <span class="segment-label">Traj:</span>
+                                <div class="traj-buttons">
+                                    <button class="traj-btn" data-traj="-1" onclick="setTrajectory(-1)" title="Downward">↓</button>
+                                    <button class="traj-btn active" data-traj="0" onclick="setTrajectory(0)" title="Flat">→</button>
+                                    <button class="traj-btn" data-traj="1" onclick="setTrajectory(1)" title="Upward">↑</button>
+                                </div>
+                            </div>
+                            <div class="shot-segment" id="compactShotTypeSegment" style="display: none;">
+                                <span class="segment-label">Shot:</span>
+                                <span class="shot-type-display" id="compactShotType">-</span>
                             </div>
                         </div>
                     </div>
@@ -2465,12 +2854,15 @@
                         <h4>Rally Control</h4>
                         <div class="rally-buttons">
                             <button class="rally-btn new-rally" id="newRallyBtn" onclick="startNewRally()">New Rally (Enter)</button>
-                            <button class="rally-btn p1-won" onclick="endRally('P1')" style="display: none;" id="p1WonBtn">P1 Won ( [ )</button>
-                            <button class="rally-btn p2-won" onclick="endRally('P2')" style="display: none;" id="p2WonBtn">P2 Won ( ] )</button>
+                            <button class="rally-btn p1-won" onclick="endRally('P1')" style="display: none;" id="p1WonBtn">P1 Won ( 1 )</button>
+                            <button class="rally-btn p2-won" onclick="endRally('P2')" style="display: none;" id="p2WonBtn">P2 Won ( 2 )</button>
                         </div>
                         <div class="rally-buttons" style="margin-top: 8px;">
-                            <button class="rally-btn undo" onclick="undoCourtShot()">Undo (Backspace)</button>
+                            <button class="rally-btn undo" onclick="undoCourtShot()">Undo Shot (Bksp)</button>
                             <button class="rally-btn cancel" onclick="cancelCurrentShot()">Cancel (Esc)</button>
+                        </div>
+                        <div class="rally-buttons" style="margin-top: 8px;">
+                            <button class="rally-btn undo" onclick="undoLastRallyWinner()" title="Undo the last rally winner selection">Undo Rally (U)</button>
                         </div>
                     </div>
 
@@ -2508,9 +2900,13 @@
                             <button class="game-btn end-game" onclick="endCurrentGame()">End Game</button>
                         </div>
                         <div class="court-export-buttons">
+                            <button class="btn btn-info btn-small" onclick="document.getElementById('courtCsvImport').click()">Import</button>
+                            <input type="file" id="courtCsvImport" accept=".csv" style="display: none;" onchange="importCourtCSV(this)">
                             <button class="btn btn-success btn-small" onclick="exportCourtCSV()">CSV</button>
                             <button class="btn btn-warning btn-small" onclick="exportCourtJSON()">JSON</button>
-                            <button class="btn btn-danger btn-small" onclick="clearCourtData()">Clear</button>
+                            <button class="btn btn-danger btn-small" onclick="clearCourtData()" title="Clear annotations (keep calibration)">Clear</button>
+                            <button class="btn btn-danger btn-small" onclick="clearAllStoredData()" title="Clear ALL data" style="background: #8e44ad;">Reset</button>
+                            <button class="btn btn-secondary btn-small" onclick="showCourtHelpModal()">?</button>
                         </div>
                     </div>
                 </div>
@@ -2652,7 +3048,26 @@
 
                     <!-- Rally Log -->
                     <div class="rally-log-panel">
-                        <h3>Rally Log</h3>
+                        <div class="rally-log-header">
+                            <h3>Rally Log</h3>
+                            <select id="shotTypeFilter" onchange="updateRallyLog()">
+                                <option value="">All Shots</option>
+                                <option value="serve">Serves</option>
+                                <option value="smash">Smash</option>
+                                <option value="clear">Clear</option>
+                                <option value="drop">Drop</option>
+                                <option value="pulldrop">Pull Drop</option>
+                                <option value="drive">Drive</option>
+                                <option value="defense">Defense</option>
+                                <option value="block">Block</option>
+                                <option value="lift">Lift</option>
+                                <option value="nettap">Net Tap</option>
+                                <option value="netkeep">Net Keep</option>
+                                <option value="push">Push</option>
+                                <option value="dribble">Dribble</option>
+                                <option value="flatgame">Flat Game</option>
+                            </select>
+                        </div>
                         <div id="rallyLogContent">
                             <div class="empty-state">No rallies yet. Press Enter to start a new rally.</div>
                         </div>
@@ -2704,6 +3119,74 @@
             </div>
             <div id="infoModalBody">
                 <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Court Position Mode Help Modal -->
+    <div class="info-modal" id="courtHelpModal">
+        <div class="info-modal-content" style="max-width: 700px;">
+            <div class="info-modal-header">
+                <h2>Court Position Mode Guide</h2>
+                <button class="info-modal-close" onclick="closeCourtHelpModal()">&times;</button>
+            </div>
+            <div class="court-help-body">
+                <div class="help-section">
+                    <h3>Workflow</h3>
+                    <ol>
+                        <li><strong>Calibrate Court:</strong> Click "Calibrate" and mark 10 points on the video court</li>
+                        <li><strong>Start Rally:</strong> Press <kbd>Enter</kbd> to start a new rally</li>
+                        <li><strong>Select Server:</strong> Click P1 or P2 in the modal</li>
+                        <li><strong>Record Shots:</strong> Click landing zone on court map for each shot</li>
+                        <li><strong>End Rally:</strong> Press <kbd>1</kbd> (P1 wins) or <kbd>2</kbd> (P2 wins)</li>
+                    </ol>
+                </div>
+
+                <div class="help-section">
+                    <h3>Keyboard Shortcuts</h3>
+                    <table class="help-shortcuts-table">
+                        <tr><td><kbd>Enter</kbd></td><td>Start new rally</td></tr>
+                        <tr><td><kbd>Space</kbd></td><td>Play/Pause video</td></tr>
+                        <tr><td><kbd>1</kbd></td><td>P1 wins rally</td></tr>
+                        <tr><td><kbd>2</kbd></td><td>P2 wins rally</td></tr>
+                        <tr><td><kbd>&lt;</kbd></td><td>Previous annotation</td></tr>
+                        <tr><td><kbd>&gt;</kbd></td><td>Next annotation</td></tr>
+                        <tr><td><kbd>↑</kbd></td><td>Upward trajectory</td></tr>
+                        <tr><td><kbd>→</kbd></td><td>Flat trajectory</td></tr>
+                        <tr><td><kbd>↓</kbd></td><td>Downward trajectory</td></tr>
+                        <tr><td><kbd>D</kbd></td><td>Dribble (during shot)</td></tr>
+                        <tr><td><kbd>B</kbd></td><td>Toggle backhand mode</td></tr>
+                        <tr><td><kbd>Z</kbd></td><td>Undo last shot</td></tr>
+                        <tr><td><kbd>Esc</kbd></td><td>Cancel current action</td></tr>
+                    </table>
+                </div>
+
+                <div class="help-section">
+                    <h3>Court Zones (6-Zone System)</h3>
+                    <div class="help-zones-grid">
+                        <div class="help-zone"><span>1</span> Front FH</div>
+                        <div class="help-zone"><span>2</span> Front BH</div>
+                        <div class="help-zone"><span>3</span> Mid FH</div>
+                        <div class="help-zone"><span>4</span> Mid BH</div>
+                        <div class="help-zone"><span>5</span> Back FH</div>
+                        <div class="help-zone"><span>6</span> Back BH</div>
+                    </div>
+                    <p style="font-size: 11px; color: #666; margin-top: 8px;">
+                        FH = Forehand side, BH = Backhand side (based on player handedness)
+                    </p>
+                </div>
+
+                <div class="help-section">
+                    <h3>Shot Type Detection</h3>
+                    <p style="font-size: 12px; color: #555;">
+                        Shot types are automatically inferred from:
+                    </p>
+                    <ul style="font-size: 12px; color: #555; margin: 5px 0 0 20px;">
+                        <li><strong>From/To zones:</strong> Where shot starts and lands</li>
+                        <li><strong>Trajectory:</strong> Upward (+1), Flat (0), or Downward (-1)</li>
+                        <li><strong>Cross-court:</strong> Detected when FH↔BH zones change</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -3134,6 +3617,9 @@
 
             // Keyboard shortcuts
             document.addEventListener('keydown', function(e) {
+                // Skip this handler when in Court mode - Court mode has its own keyboard handler
+                if (currentMode === 'court') return;
+
                 const tagName = e.target.tagName;
                 const isInput = tagName === 'INPUT' || tagName === 'TEXTAREA';
                 const isButton = tagName === 'BUTTON';
@@ -4482,12 +4968,28 @@
             const modal = document.getElementById('infoModal');
             modal.classList.remove('show');
         }
-        
+
+        // Show Court Help Modal
+        function showCourtHelpModal() {
+            const modal = document.getElementById('courtHelpModal');
+            modal.classList.add('show');
+        }
+
+        // Close Court Help Modal
+        function closeCourtHelpModal() {
+            const modal = document.getElementById('courtHelpModal');
+            modal.classList.remove('show');
+        }
+
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('infoModal');
-            if (event.target === modal) {
+            const infoModal = document.getElementById('infoModal');
+            const courtHelpModal = document.getElementById('courtHelpModal');
+            if (event.target === infoModal) {
                 closeInfoModal();
+            }
+            if (event.target === courtHelpModal) {
+                closeCourtHelpModal();
             }
         }
 
@@ -5034,20 +5536,20 @@
             ];
             
             calibrationPoints.forEach((point, idx) => {
-                // Point circle
+                // Point circle (smaller for better edge precision)
                 ctx.beginPath();
-                ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
+                ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
                 ctx.fillStyle = colors[idx % colors.length];
                 ctx.fill();
                 ctx.strokeStyle = 'white';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
-                
+
                 // Label
                 ctx.fillStyle = 'white';
-                ctx.font = 'bold 10px sans-serif';
+                ctx.font = 'bold 8px sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText(idx + 1, point.x, point.y + 4);
+                ctx.fillText(idx + 1, point.x, point.y + 3);
             });
             
             // Draw horizontal lines connecting point pairs
@@ -5117,11 +5619,11 @@
                 ctx.lineTo(mouseX, canvas.height);
                 ctx.stroke();
                 
-                // Cursor circle
+                // Cursor circle (smaller for precision)
                 ctx.beginPath();
-                ctx.arc(mouseX, mouseY, 10, 0, Math.PI * 2);
+                ctx.arc(mouseX, mouseY, 6, 0, Math.PI * 2);
                 ctx.strokeStyle = colors[calibrationPoints.length % colors.length];
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1.5;
                 ctx.stroke();
             }
         }
@@ -5762,11 +6264,8 @@
                 }
             }
         }
-        
-        // Draw court overlay on video
-        // Height of native video controls (clicks in this area pass through to video controls)
-        const VIDEO_CONTROLS_HEIGHT = 45;
 
+        // Draw court overlay on video
         function drawCourtOverlay() {
             const canvas = document.getElementById('courtOverlayCanvas');
             const video = document.getElementById('courtVideoPlayer');
@@ -5989,7 +6488,8 @@
             currentTrajectory = traj;
             trajectoryOverridden = true;
             updateTrajectoryDisplay();
-            
+            updateCompactShotBar();
+
             // If we have a pending shot (from and to zones set), update the inferred shot type
             if (selectedFromZone && selectedToZone) {
                 const shotType = inferShotTypeWithTrajectory(selectedFromZone, selectedToZone, currentTrajectory);
@@ -6059,11 +6559,12 @@
 
             // Determine if cross-court
             // Odd zones (1,3,5) = FH side, Even zones (2,4,6) = BH side
-            // CROSS = different parity (odd→even or even→odd) - shuttle crosses from FH to BH or vice versa
-            // STRAIGHT = same parity (odd→odd or even→even) - shuttle stays on same side type
+            // CROSS = SAME parity (odd→odd or even→even) - shuttle crosses diagonally to same side type
+            // STRAIGHT = different parity (odd→even or even→odd) - shuttle goes straight across
+            // Example: 6a→2b, 6a→4b, 6a→6b are all CROSS (even to even)
             const fromFH = (fromN % 2 === 1);
             const toFH = (toN % 2 === 1);
-            const isCross = (fromFH !== toFH);  // Cross when going from FH(odd) to BH(even) or vice versa
+            const isCross = (fromFH === toFH);  // Cross when same parity (FH→FH or BH→BH)
             const crossSuffix = isCross ? '_cross' : '';
 
             // Get zone categories: 1-2 = Front, 3-4 = Mid, 5-6 = Back
@@ -6076,67 +6577,115 @@
             const fromCat = getCategory(fromN);
             const toCat = getCategory(toN);
 
-            // Determine stroke prefix based on FROM zone
-            // Odd zones (1,3,5) = Forehand side → forehand_ or overhead_ (for zone 5)
-            // Even zones (2,4,6) = Backhand side → backhand_
-            // Zone 5 (Back FH): overhead_ (overhead forehand)
-            // Zone 6 (Back BH): overhead_ by default (round-the-head), backhand_ if zone6Mode === 'backhand'
-            let strokePrefix = '';
-            if (fromCat === 'back') {
-                // Back zones: overhead or backhand
-                if (fromN === 6 && zone6Mode === 'backhand') {
-                    strokePrefix = 'backhand_';
-                } else {
-                    strokePrefix = 'overhead_';
-                }
-            } else {
-                // Front/Mid zones: forehand or backhand based on FH/BH side
-                strokePrefix = fromFH ? 'forehand_' : 'backhand_';
-            }
-
+            // FIRST: Determine base shot based on FROM zone, TO zone, and TRAJECTORY
+            // Trajectory: -1 = Downward (↓), 0 = Flat (→), 1 = Upward (↑)
             let baseShot = 'unknown';
 
             // FROM FRONT (Zones 1, 2)
             if (fromCat === 'front') {
                 if (toCat === 'front') {
-                    // Net shots: dribble (if 'D' pressed) or netkeep (default)
-                    // Only straight shots can be dribble
+                    // Front → Front: netkeep (default), dribble with D key
                     if (!isCross && dribbleMode) {
                         baseShot = 'dribble';
                     } else {
                         baseShot = 'netkeep';
                     }
                 } else if (toCat === 'mid') {
-                    baseShot = 'push';
+                    // Front → Mid: ↓ nettap, ↑ lift, DEFAULT push
+                    if (trajectory === -1) {
+                        baseShot = 'nettap';
+                    } else if (trajectory === 1) {
+                        baseShot = 'lift';
+                    } else {
+                        baseShot = 'push';
+                    }
                 } else { // back
-                    baseShot = 'lift';
+                    // Front → Back: ↓ nettap, ↑ lift, DEFAULT lift
+                    if (trajectory === -1) {
+                        baseShot = 'nettap';
+                    } else {
+                        baseShot = 'lift';
+                    }
                 }
             }
             // FROM MID (Zones 3, 4)
             else if (fromCat === 'mid') {
                 if (toCat === 'front') {
-                    baseShot = 'defense';  // Changed from 'block' to 'defense'
+                    // Mid → Front: ↓ block, ↑ defense, DEFAULT defense
+                    if (trajectory === -1) {
+                        baseShot = 'block';
+                    } else {
+                        baseShot = 'defense';
+                    }
                 } else if (toCat === 'mid') {
-                    baseShot = 'drive';
+                    // Mid → Mid: ↓ smash, ↑ clear, DEFAULT flatgame
+                    if (trajectory === -1) {
+                        baseShot = 'smash';
+                    } else if (trajectory === 1) {
+                        baseShot = 'clear';
+                    } else {
+                        baseShot = 'flatgame';
+                    }
                 } else { // back
-                    baseShot = 'lift';
+                    // Mid → Back: ↓ smash, ↑ clear, DEFAULT clear
+                    if (trajectory === -1) {
+                        baseShot = 'smash';
+                    } else {
+                        baseShot = 'clear';
+                    }
                 }
             }
             // FROM BACK (Zones 5, 6)
             else { // back
                 if (toCat === 'front') {
-                    // Drop shot; pulldrop if trajectory is flat (0)
-                    if (trajectory === 0) {
+                    // Back → Front: ↑ pulldrop, DEFAULT drop
+                    if (trajectory === 1) {
                         baseShot = 'pulldrop';
                     } else {
                         baseShot = 'drop';
                     }
                 } else if (toCat === 'mid') {
-                    // Smash (removed halfsmash variation)
-                    baseShot = 'smash';
+                    // Back → Mid: ↓ smash, ↑ clear, DEFAULT smash
+                    if (trajectory === 1) {
+                        baseShot = 'clear';
+                    } else {
+                        baseShot = 'smash';
+                    }
                 } else { // back
+                    // Back → Back: DEFAULT clear (all trajectories)
                     baseShot = 'clear';
                 }
+            }
+
+            // SECOND: Determine stroke prefix based on FROM zone AND shot type
+            // Prefix rules:
+            // - Zone 1, 2 (Front): forehand_ / backhand_ based on FH/BH side
+            // - Zone 3 (Mid FH): ALWAYS forehand_
+            // - Zone 4 (Mid BH): overhead_ for smash/clear (default), backhand_ with B key; backhand_ for other shots
+            // - Zone 5 (Back FH): ALWAYS forehand_
+            // - Zone 6 (Back BH): overhead_ (default), backhand_ with B key
+            let strokePrefix = '';
+            const isSmashOrClear = (baseShot === 'smash' || baseShot === 'clear');
+
+            if (fromN === 1 || fromN === 2) {
+                // Front zones: forehand or backhand based on FH/BH side
+                strokePrefix = fromFH ? 'forehand_' : 'backhand_';
+            } else if (fromN === 3) {
+                // Mid FH: ALWAYS forehand
+                strokePrefix = 'forehand_';
+            } else if (fromN === 4) {
+                // Mid BH: overhead for smash/clear (default), backhand with B key; backhand for other shots
+                if (isSmashOrClear) {
+                    strokePrefix = (zone6Mode === 'backhand') ? 'backhand_' : 'overhead_';
+                } else {
+                    strokePrefix = 'backhand_';
+                }
+            } else if (fromN === 5) {
+                // Back FH: ALWAYS forehand
+                strokePrefix = 'forehand_';
+            } else if (fromN === 6) {
+                // Back BH: overhead (default), backhand with B key
+                strokePrefix = (zone6Mode === 'backhand') ? 'backhand_' : 'overhead_';
             }
 
             return strokePrefix + baseShot + crossSuffix;
@@ -6212,19 +6761,146 @@
             if (courtVideoEl && courtVideoEl.readyState >= 1) {
                 const currentTime = courtVideoEl.currentTime;
                 const frameNum = Math.floor(currentTime * courtFps);
-                
+
                 const frameEl = document.getElementById('courtFrameNumber');
                 const timeEl = document.getElementById('courtCurrentTime');
                 if (frameEl) frameEl.textContent = frameNum;
                 if (timeEl) timeEl.textContent = currentTime.toFixed(2);
+
+                // Update custom video controls
+                updateCourtVideoControls();
             }
         }
-        
+
+        // Custom video control functions
+        function toggleCourtPlayPause() {
+            const courtVideoEl = document.getElementById('courtVideoPlayer');
+            if (!courtVideoEl) return;
+
+            if (courtVideoEl.paused) {
+                courtVideoEl.play().catch(err => console.log('Play prevented:', err.message));
+            } else {
+                courtVideoEl.pause();
+            }
+        }
+
+        function updateCourtVideoControls() {
+            const courtVideoEl = document.getElementById('courtVideoPlayer');
+            if (!courtVideoEl) return;
+
+            // Update play/pause button
+            const playIcon = document.querySelector('#courtPlayPauseBtn .play-icon');
+            const pauseIcon = document.querySelector('#courtPlayPauseBtn .pause-icon');
+            if (playIcon && pauseIcon) {
+                playIcon.style.display = courtVideoEl.paused ? 'inline' : 'none';
+                pauseIcon.style.display = courtVideoEl.paused ? 'none' : 'inline';
+            }
+
+            // Update seek bar
+            const seekBar = document.getElementById('courtVideoSeek');
+            if (seekBar && courtVideoEl.duration) {
+                seekBar.value = (courtVideoEl.currentTime / courtVideoEl.duration) * 100;
+            }
+
+            // Update time display
+            const timeDisplay = document.getElementById('courtTimeDisplay');
+            if (timeDisplay) {
+                const current = formatTime(courtVideoEl.currentTime);
+                const total = formatTime(courtVideoEl.duration || 0);
+                timeDisplay.textContent = `${current} / ${total}`;
+            }
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Removed fullscreen mode - using larger video player layout instead
+
+        // Toast timeout reference
+        let shotToastTimeout = null;
+
+        // Show shot toast - brief notification for each shot
+        function showShotToast(shotNum, shotName) {
+            const toast = document.getElementById('shotToast');
+            if (!toast) return;
+
+            // Clear any existing timeout
+            if (shotToastTimeout) {
+                clearTimeout(shotToastTimeout);
+            }
+
+            // Format shot name for display
+            const displayName = formatShotName(shotName);
+
+            // Set content
+            toast.innerHTML = '';
+            const numDiv = document.createElement('div');
+            numDiv.className = 'toast-shot-num';
+            numDiv.textContent = 'Shot ' + shotNum;
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'toast-shot-name';
+            nameDiv.textContent = displayName;
+            toast.appendChild(numDiv);
+            toast.appendChild(nameDiv);
+
+            // Show toast
+            toast.classList.add('visible');
+
+            // Hide after 1.5 seconds
+            shotToastTimeout = setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 1500);
+        }
+
+        // Legacy function - kept for compatibility with existing calls
+        function updateShotTagsOverlay() {
+            // No longer showing overlay - using toast notifications instead
+        }
+
+        function setCourtPlaybackSpeed() {
+            const courtVideoEl = document.getElementById('courtVideoPlayer');
+            const speedSelect = document.getElementById('courtSpeedSelect');
+            if (courtVideoEl && speedSelect) {
+                courtVideoEl.playbackRate = parseFloat(speedSelect.value);
+            }
+        }
+
+        function setupCourtVideoControls() {
+            const courtVideoEl = document.getElementById('courtVideoPlayer');
+            const seekBar = document.getElementById('courtVideoSeek');
+
+            if (!courtVideoEl || !seekBar) return;
+
+            // Seek bar interaction
+            seekBar.addEventListener('input', function() {
+                if (courtVideoEl.duration) {
+                    courtVideoEl.currentTime = (this.value / 100) * courtVideoEl.duration;
+                }
+            });
+
+            // Video events
+            courtVideoEl.addEventListener('play', updateCourtVideoControls);
+            courtVideoEl.addEventListener('pause', updateCourtVideoControls);
+            courtVideoEl.addEventListener('loadedmetadata', function() {
+                updateCourtVideoControls();
+                // Set seek bar max when video is loaded
+                const seekBar = document.getElementById('courtVideoSeek');
+                if (seekBar) seekBar.max = 100;
+            });
+        }
+
         // Initialize Court Mode
         function initCourtMode() {
             // Setup court video reference
             courtVideo = document.getElementById('courtVideoPlayer');
-            
+
+            // Setup custom video controls
+            setupCourtVideoControls();
+
             // Setup player name inputs
             const p1Input = document.getElementById('p1NameInput');
             const p2Input = document.getElementById('p2NameInput');
@@ -6294,26 +6970,6 @@
 
             const canvas = e.target;
             const rect = canvas.getBoundingClientRect();
-
-            // Check if click is in the video controls area (bottom of video)
-            // If so, pass the click through to the video controls
-            const clickY = e.clientY - rect.top;
-            if (clickY > rect.height - VIDEO_CONTROLS_HEIGHT) {
-                // Click is in control bar area - pass through to video element
-                // Temporarily hide canvas, find element at click point, click it, restore canvas
-                canvas.style.pointerEvents = 'none';
-                const elementsAtPoint = document.elementsFromPoint(e.clientX, e.clientY);
-                canvas.style.pointerEvents = 'auto';
-
-                // Find the video or its controls and click them
-                for (const elem of elementsAtPoint) {
-                    if (elem !== canvas && (elem.tagName === 'VIDEO' || elem.closest('video'))) {
-                        elem.click();
-                        break;
-                    }
-                }
-                return;
-            }
 
             const courtVideoEl = document.getElementById('courtVideoPlayer');
             if (!courtVideoEl || courtVideoEl.readyState < 2) {
@@ -6387,6 +7043,7 @@
                     document.getElementById('fromCoordsDisplay').style.display = 'inline';
                     document.getElementById('toZoneDisplay').textContent = 'Click serve landing...';
                     document.getElementById('toZoneDisplay').classList.add('pending');
+                    updateCompactShotBar();
 
                     // Redraw overlay with FROM marker
                     drawCourtOverlay();
@@ -6440,12 +7097,13 @@
             document.getElementById('toZoneDisplay').classList.remove('pending');
             document.getElementById('toCoordsDisplay').textContent = `(${courtX.toFixed(1)}m, ${courtY.toFixed(1)}m)`;
             document.getElementById('toCoordsDisplay').style.display = 'inline';
-            
+
             document.getElementById('shotTypeDisplay').style.display = 'block';
             document.getElementById('inferredShotType').textContent = formatShotName(shotType);
-            
-            // Update trajectory display
+
+            // Update trajectory display and compact bar
             updateTrajectoryDisplay();
+            updateCompactShotBar();
             
             // Draw markers on canvas
             drawCourtOverlay();
@@ -6498,11 +7156,12 @@
             document.getElementById('toZoneDisplay').classList.add('pending');
             document.getElementById('toCoordsDisplay').style.display = 'none';
             document.getElementById('shotTypeDisplay').style.display = 'none';
-            
-            // Update trajectory selector
+
+            // Update trajectory selector and compact bar
             updateTrajectorySelector();
             updateTrajectoryDisplay();
-            
+            updateCompactShotBar();
+
             // Redraw overlay with FROM marker
             drawCourtOverlay();
         }
@@ -6578,6 +7237,10 @@
             courtAnnotations.push(shot);
             currentShotNum++;
 
+            // Show shot toast notification
+            showShotToast(currentShotNum, shotType);
+            updateShotTagsOverlay();
+
             // Reset shot modifier states for next shot
             resetShotModifiers();
 
@@ -6609,15 +7272,9 @@
             const displayX = e.clientX - rect.left;
             const displayY = e.clientY - rect.top;
 
-            // Change cursor in control bar area to indicate video controls access
-            if (displayY > rect.height - VIDEO_CONTROLS_HEIGHT) {
-                canvas.style.cursor = 'default';
-                document.getElementById('coordDisplay').style.display = 'none';
-                return;
-            } else {
-                canvas.style.cursor = 'crosshair';
-            }
-            
+            // Set crosshair cursor for canvas
+            canvas.style.cursor = 'crosshair';
+
             // Scale to calibration dimensions
             const scaleX = calibrationCanvasWidth / rect.width;
             const scaleY = calibrationCanvasHeight / rect.height;
@@ -6664,9 +7321,9 @@
             document.getElementById('serverModalP1Name').textContent = p1Name;
             document.getElementById('serverModalP2Name').textContent = p2Name;
             
-            // Update P1 Won / P2 Won buttons (with [ ] keyboard shortcuts)
-            document.getElementById('p1WonBtn').textContent = `${p1Name} Won ( [ )`;
-            document.getElementById('p2WonBtn').textContent = `${p2Name} Won ( ] )`;
+            // Update P1 Won / P2 Won buttons (with 1 / 2 keyboard shortcuts)
+            document.getElementById('p1WonBtn').textContent = `${p1Name} Won ( 1 )`;
+            document.getElementById('p2WonBtn').textContent = `${p2Name} Won ( 2 )`;
         }
         
         function setupZoneClickHandlers() {
@@ -6876,6 +7533,10 @@
             courtAnnotations.push(shot);
             currentShotNum++;
 
+            // Show shot toast notification
+            showShotToast(currentShotNum, shotType);
+            updateShotTagsOverlay();
+
             // Reset shot modifier states for next shot
             resetShotModifiers();
 
@@ -6920,7 +7581,44 @@
             const name = zoneNames[num] || num;
             return `${name} (${side})`;
         }
-        
+
+        // Sync compact shot bar with current shot state
+        function updateCompactShotBar() {
+            const compactFrom = document.getElementById('compactFromZone');
+            const compactTo = document.getElementById('compactToZone');
+            const compactShotType = document.getElementById('compactShotType');
+            const compactShotSegment = document.getElementById('compactShotTypeSegment');
+
+            if (compactFrom) {
+                const fromText = selectedFromZone ? formatZoneName(selectedFromZone) : '-';
+                compactFrom.textContent = fromText;
+                compactFrom.classList.toggle('pending', !selectedFromZone);
+            }
+
+            if (compactTo) {
+                const toText = selectedToZone ? formatZoneName(selectedToZone) : '-';
+                compactTo.textContent = toText;
+                compactTo.classList.toggle('pending', !selectedToZone);
+            }
+
+            // Show shot type if both zones are selected
+            if (compactShotSegment && compactShotType) {
+                if (selectedFromZone && selectedToZone) {
+                    const shotType = inferShotTypeWithTrajectory(selectedFromZone, selectedToZone, currentTrajectory);
+                    compactShotType.textContent = formatShotName(shotType);
+                    compactShotSegment.style.display = 'flex';
+                } else {
+                    compactShotSegment.style.display = 'none';
+                }
+            }
+
+            // Update trajectory button states
+            document.querySelectorAll('.compact-shot-bar .traj-btn').forEach(btn => {
+                const traj = parseInt(btn.dataset.traj);
+                btn.classList.toggle('active', traj === currentTrajectory);
+            });
+        }
+
         // Rally Management
         function startNewRally() {
             if (rallyInProgress && currentRallyShots.length > 0) {
@@ -6951,6 +7649,9 @@
             // Show server selection modal
             waitingForServer = true;
             document.getElementById('serverModal').classList.add('show');
+
+            // Update overlay
+            updateShotTagsOverlay();
         }
         
         function selectServer(server) {
@@ -7086,6 +7787,7 @@
             // Update displays
             updateScoreDisplay();
             updateRallyLog();
+            updateShotTagsOverlay();
             clearZoneHighlights();
             
             // Hide end rally buttons
@@ -7100,7 +7802,92 @@
             // Save data
             saveCourtData();
         }
-        
+
+        // Undo the last rally winner (revert to previous rally state)
+        function undoLastRallyWinner() {
+            // Can't undo if we're in the middle of a rally
+            if (rallyInProgress) {
+                alert('Cannot undo while rally is in progress. Finish or cancel current rally first.');
+                return;
+            }
+
+            // Can't undo if we're at rally 1 with no completed rallies
+            if (currentRally <= 1 && !courtAnnotations.some(a => a.game === currentGame && a.rallyWinner)) {
+                alert('No completed rally to undo.');
+                return;
+            }
+
+            // Find the last completed rally
+            const lastRallyNum = currentRally - 1;
+            if (lastRallyNum < 1) {
+                alert('No rally to undo.');
+                return;
+            }
+
+            // Get all shots from the last rally
+            const lastRallyShots = courtAnnotations.filter(
+                a => a.game === currentGame && a.rally === lastRallyNum
+            );
+
+            if (lastRallyShots.length === 0) {
+                alert('No shots found in last rally.');
+                return;
+            }
+
+            // Get the winner that was recorded
+            const previousWinner = lastRallyShots[0].rallyWinner;
+            if (!previousWinner) {
+                alert('Last rally has no winner recorded.');
+                return;
+            }
+
+            if (!confirm(`Undo rally ${lastRallyNum}? (${previousWinner} won)\nThis will revert the score and reopen the rally.`)) {
+                return;
+            }
+
+            // Revert score
+            if (previousWinner === 'P1') {
+                p1Score = Math.max(0, p1Score - 1);
+            } else {
+                p2Score = Math.max(0, p2Score - 1);
+            }
+
+            // Remove winner from all shots in that rally
+            courtAnnotations.forEach(ann => {
+                if (ann.game === currentGame && ann.rally === lastRallyNum) {
+                    ann.rallyWinner = null;
+                }
+            });
+
+            // Restore rally state
+            currentRally = lastRallyNum;
+            currentRallyShots = lastRallyShots.map(s => ({ ...s, rallyWinner: null }));
+            currentShotNum = currentRallyShots.length;
+            rallyInProgress = true;
+
+            // Set up current hitter and zones based on last shot
+            if (currentRallyShots.length > 0) {
+                const lastShot = currentRallyShots[currentRallyShots.length - 1];
+                currentHitter = lastShot.player === 'P1' ? 'P2' : 'P1';
+                selectedFromZone = mapLandingToNextFrom(lastShot.toZone);
+                selectedToZone = null;
+            }
+
+            // Update displays
+            updateScoreDisplay();
+            updateRallyLog();
+            updateCompactShotBar();
+
+            // Show end rally buttons
+            document.getElementById('p1WonBtn').style.display = 'inline-block';
+            document.getElementById('p2WonBtn').style.display = 'inline-block';
+
+            document.getElementById('serverIndicator').textContent = 'Rally reopened - select winner';
+
+            saveCourtData();
+            showToast({ name: `Rally ${lastRallyNum} reopened` }, true);
+        }
+
         function undoCourtShot() {
             if (currentRallyShots.length === 0) {
                 // No shots in current rally
@@ -7154,9 +7941,10 @@
             }
             
             updateRallyLog();
+            updateShotTagsOverlay();
             saveCourtData();
         }
-        
+
         function cancelCurrentShot() {
             if (!rallyInProgress) {
                 return;
@@ -7207,7 +7995,22 @@
         
         function updateRallyLog() {
             const container = document.getElementById('rallyLogContent');
-            
+            const filterSelect = document.getElementById('shotTypeFilter');
+            const shotFilter = filterSelect ? filterSelect.value : '';
+
+            // Helper to check if shot matches filter
+            function shotMatchesFilter(shot, filter) {
+                if (!filter) return true;
+                const shotType = (shot.shotType || '').toLowerCase();
+                // Handle serve filter
+                if (filter === 'serve') {
+                    return shotType.includes('serve');
+                }
+                // Remove prefix and check for match
+                const baseType = shotType.replace(/^(forehand_|backhand_|overhead_)/, '');
+                return baseType === filter || baseType.startsWith(filter);
+            }
+
             // Group annotations by rally
             const rallies = {};
             courtAnnotations.forEach(ann => {
@@ -7217,53 +8020,69 @@
                         game: ann.game,
                         rally: ann.rally,
                         shots: [],
+                        allShots: [],
                         winner: ann.rallyWinner,
                         server: ann.server
                     };
                 }
-                rallies[key].shots.push(ann);
+                rallies[key].allShots.push(ann);
+                if (shotMatchesFilter(ann, shotFilter)) {
+                    rallies[key].shots.push(ann);
+                }
                 if (ann.rallyWinner) {
                     rallies[key].winner = ann.rallyWinner;
                 }
             });
-            
+
             // Add current rally if in progress
             if (rallyInProgress && currentRallyShots.length > 0) {
                 const key = `${currentGame}-${currentRally}`;
+                const filteredShots = currentRallyShots.filter(s => shotMatchesFilter(s, shotFilter));
                 rallies[key] = {
                     game: currentGame,
                     rally: currentRally,
-                    shots: currentRallyShots,
+                    shots: filteredShots,
+                    allShots: currentRallyShots,
                     winner: null,
                     server: currentServer,
                     current: true
                 };
             }
-            
-            const rallyKeys = Object.keys(rallies).sort((a, b) => {
+
+            // Filter out rallies with no matching shots when filter is active
+            let rallyKeys = Object.keys(rallies);
+            if (shotFilter) {
+                rallyKeys = rallyKeys.filter(key => rallies[key].shots.length > 0);
+            }
+
+            rallyKeys = rallyKeys.sort((a, b) => {
                 const [gA, rA] = a.split('-').map(Number);
                 const [gB, rB] = b.split('-').map(Number);
                 if (gA !== gB) return gB - gA;
                 return rB - rA;
             });
-            
+
             if (rallyKeys.length === 0) {
-                container.innerHTML = '<div class="empty-state">No rallies yet. Press Enter to start a new rally.</div>';
+                const emptyMsg = shotFilter ?
+                    `No rallies contain ${shotFilter} shots.` :
+                    'No rallies yet. Press Enter to start a new rally.';
+                container.innerHTML = `<div class="empty-state">${emptyMsg}</div>`;
                 return;
             }
-            
+
             let html = '';
             rallyKeys.forEach(key => {
                 const rally = rallies[key];
                 const currentClass = rally.current ? ' current' : '';
-                const winnerBadge = rally.winner ? 
-                    `<span class="rally-winner">${rally.winner === 'P1' ? p1Name : p2Name} Won</span>` : 
+                const winnerBadge = rally.winner ?
+                    `<span class="rally-winner">${rally.winner === 'P1' ? p1Name : p2Name} Won</span>` :
                     (rally.current ? '<span class="rally-winner" style="background: #f39c12;">In Progress</span>' : '');
-                
+                const filterInfo = shotFilter ? ` <span style="font-size: 10px; color: #888;">(${rally.shots.length}/${rally.allShots.length})</span>` : '';
+
                 html += `
                     <div class="rally-entry${currentClass}">
                         <div class="rally-header">
-                            <span>Game ${rally.game} | Rally ${rally.rally}</span>
+                            <span>Game ${rally.game} | Rally ${rally.rally}${filterInfo}</span>
                             ${winnerBadge}
                         </div>
                         <div class="rally-shots">
@@ -7365,9 +8184,12 @@
             }
         }
         
-        function clearCourtData() {
-            if (!confirm('Clear all court position data?')) return;
-            
+        function clearCourtData(clearCalibration = false) {
+            const msg = clearCalibration ?
+                'Clear ALL court data including calibration?' :
+                'Clear court position data? (Calibration will be kept)';
+            if (!confirm(msg)) return;
+
             courtAnnotations = [];
             currentGame = 1;
             currentRally = 1;
@@ -7378,16 +8200,69 @@
             rallyInProgress = false;
             selectedFromZone = null;
             selectedToZone = null;
-            
+
             clearZoneHighlights();
             updateScoreDisplay();
             updateRallyLog();
-            
+            updateShotTagsOverlay();
+
             document.getElementById('p1WonBtn').style.display = 'none';
             document.getElementById('p2WonBtn').style.display = 'none';
             document.getElementById('serverIndicator').textContent = 'Press Enter for new rally';
-            
+
             localStorage.removeItem('courtPositionData');
+
+            if (clearCalibration) {
+                localStorage.removeItem('courtCalibration');
+                calibrationPoints = {};
+                isCalibrated = false;
+                homographyMatrix = null;
+                document.getElementById('calibrateBtn').textContent = 'Calibrate';
+                document.getElementById('calibrateBtn').classList.remove('calibrated');
+            }
+        }
+
+        function clearAllStoredData() {
+            if (!confirm('Clear ALL stored data?\n\n• Court annotations\n• Court calibration\n• Match annotations\n\nThis cannot be undone!')) return;
+
+            // Clear Court Position data
+            localStorage.removeItem('courtPositionData');
+            localStorage.removeItem('courtCalibration');
+
+            // Clear Match annotations
+            localStorage.removeItem('badmintonAnnotations');
+
+            // Reset Court mode state
+            courtAnnotations = [];
+            calibrationPoints = {};
+            isCalibrated = false;
+            homographyMatrix = null;
+            currentGame = 1;
+            currentRally = 1;
+            p1Score = 0;
+            p2Score = 0;
+            currentShotNum = 0;
+            currentRallyShots = [];
+            rallyInProgress = false;
+
+            // Reset Match mode state
+            annotations = [];
+            lastShot = null;
+            recentShotsList = [];
+
+            // Update displays
+            if (currentMode === 'court') {
+                clearZoneHighlights();
+                updateScoreDisplay();
+                updateRallyLog();
+                updateShotTagsOverlay();
+                document.getElementById('calibrateBtn').textContent = 'Calibrate';
+                document.getElementById('calibrateBtn').classList.remove('calibrated');
+            } else {
+                updateAnnotationsDisplay();
+            }
+
+            alert('All stored data cleared.');
         }
         
         // Export
@@ -7449,7 +8324,91 @@
             a.click();
             URL.revokeObjectURL(url);
         }
-        
+
+        // Import Court CSV
+        function importCourtCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.trim().split('\n');
+
+                if (lines.length < 2) {
+                    alert('CSV file is empty or has no data rows.');
+                    input.value = '';
+                    return;
+                }
+
+                // Parse header
+                const header = lines[0].split(',');
+                const expectedHeader = ['id', 'game', 'frame', 'timestamp', 'from_zone', 'from_x', 'from_y', 'to_zone', 'to_x', 'to_y', 'trajectory', 'shot_type'];
+
+                // Validate header
+                if (header.length < expectedHeader.length) {
+                    alert('Invalid CSV format. Expected columns: ' + expectedHeader.join(', '));
+                    input.value = '';
+                    return;
+                }
+
+                // Clear existing data
+                courtAnnotations = [];
+
+                // Parse data rows
+                let maxGame = 1;
+                let maxRally = 0;
+
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+
+                    const values = line.split(',');
+
+                    const ann = {
+                        game: parseInt(values[1]) || 1,
+                        rally: 0, // Will be computed
+                        shotNum: 0, // Will be computed
+                        player: null, // Not in CSV, will need to infer
+                        frame: parseInt(values[2]) || 0,
+                        timestamp: parseFloat(values[3]) || 0,
+                        fromZone: values[4] || '',
+                        fromX: values[5] ? parseFloat(values[5]) : null,
+                        fromY: values[6] ? parseFloat(values[6]) : null,
+                        toZone: values[7] || '',
+                        toX: values[8] ? parseFloat(values[8]) : null,
+                        toY: values[9] ? parseFloat(values[9]) : null,
+                        trajectory: values[10] !== '' ? parseInt(values[10]) : 0,
+                        shotType: values[11] || '',
+                        rallyWinner: null
+                    };
+
+                    if (ann.game > maxGame) maxGame = ann.game;
+
+                    courtAnnotations.push(ann);
+                }
+
+                // Update game state
+                currentGame = maxGame;
+                currentRally = maxRally + 1;
+                currentShotNum = 0;
+                currentRallyShots = [];
+                rallyInProgress = false;
+
+                // Update displays
+                updateGameDisplay();
+                updateScoreDisplay();
+                updateRallyLog();
+                updateShotTagsOverlay();
+                saveCourtData();
+
+                alert(`Imported ${courtAnnotations.length} annotations from CSV.`);
+                input.value = '';
+            };
+
+            reader.readAsText(file);
+        }
+
         // Keyboard shortcuts for Court Mode
         document.addEventListener('keydown', function(e) {
             if (currentMode !== 'court') return;
@@ -7466,33 +8425,21 @@
                 return;
             }
             
-            // [ or ] - End rally (P1 won or P2 won)
-            if ((e.key === '[' || e.key === ']') && !isInput) {
+            // 1 or 2 - End rally (P1 won or P2 won) OR Server selection
+            if ((e.key === '1' || e.key === '2') && !isInput) {
                 e.preventDefault();
-                if (rallyInProgress && currentRallyShots.length > 0) {
-                    endRally(e.key === '[' ? 'P1' : 'P2');
-                }
-                return;
-            }
-            
-            // 1, 2, 3 - Trajectory override (in canvas mode) or server selection
-            if ((e.key === '1' || e.key === '2' || e.key === '3') && !isInput) {
-                e.preventDefault();
-                
+
                 // Server selection takes priority
                 if (waitingForServer) {
                     if (e.key === '1') selectServer('P1');
                     else if (e.key === '2') selectServer('P2');
                     return;
                 }
-                
-                // Trajectory override (in canvas mode when rally is in progress)
-                if (courtInputMode === 'canvas' && rallyInProgress && selectedFromZone) {
-                    const trajMap = { '1': -1, '2': 0, '3': 1 };
-                    setTrajectory(trajMap[e.key]);
-                    return;
+
+                // End rally - P1 won (1) or P2 won (2)
+                if (rallyInProgress && currentRallyShots.length > 0) {
+                    endRally(e.key === '1' ? 'P1' : 'P2');
                 }
-                
                 return;
             }
             
@@ -7519,51 +8466,81 @@
                 return;
             }
             
-            // Frame navigation for court mode
+            // Keyboard controls for court mode
             if (!isInput) {
                 const courtVideoEl = document.getElementById('courtVideoPlayer');
-                if (e.key === 'ArrowLeft') {
+
+                // Arrow keys - Trajectory selection (when waiting for landing zone)
+                if (e.key === 'ArrowUp') {
                     e.preventDefault();
-                    navigateCourtFrames(-1);
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    navigateCourtFrames(1);
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    jumpToCourtPrevAnnotation();
+                    if (rallyInProgress && selectedFromZone) {
+                        setTrajectory(1);  // Upward
+                    }
                 } else if (e.key === 'ArrowDown') {
                     e.preventDefault();
+                    if (rallyInProgress && selectedFromZone) {
+                        setTrajectory(-1);  // Downward
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    if (rallyInProgress && selectedFromZone) {
+                        setTrajectory(0);  // Flat
+                    }
+                }
+                // < > - Navigate between annotations
+                else if (e.key === '<' || e.key === ',') {
+                    e.preventDefault();
+                    jumpToCourtPrevAnnotation();
+                } else if (e.key === '>' || e.key === '.') {
+                    e.preventDefault();
                     jumpToCourtNextAnnotation();
-                } else if (e.key === 'c' || e.key === 'C') {
+                }
+                // C/V - Jump 10 frames
+                else if (e.key === 'c' || e.key === 'C') {
                     e.preventDefault();
                     navigateCourtFrames(-10);
                 } else if (e.key === 'v' || e.key === 'V') {
                     e.preventDefault();
                     navigateCourtFrames(10);
-                } else if (e.key === 'b' || e.key === 'B') {
-                    // Toggle Zone 6 backhand mode (before clicking TO zone)
+                }
+                // B - Toggle Zone 6/4 backhand mode (before clicking TO zone)
+                else if (e.key === 'b' || e.key === 'B') {
                     e.preventDefault();
                     if (rallyInProgress && selectedFromZone) {
                         zone6Mode = (zone6Mode === 'overhead') ? 'backhand' : 'overhead';
                         updateModeIndicators();
                         console.log('Zone 6 mode:', zone6Mode);
                     }
-                } else if (e.key === 'd' || e.key === 'D') {
-                    // Toggle dribble mode for straight net shots (before clicking TO zone)
+                }
+                // D - Dribble toggle (during shot only)
+                else if (e.key === 'd' || e.key === 'D') {
                     e.preventDefault();
                     if (rallyInProgress && selectedFromZone) {
                         dribbleMode = !dribbleMode;
                         updateModeIndicators();
                         console.log('Dribble mode:', dribbleMode);
                     }
-                } else if (e.key === '0' && !waitingForServer) {
+                }
+                // U - Undo last rally winner
+                else if ((e.key === 'u' || e.key === 'U') && !waitingForServer) {
+                    e.preventDefault();
+                    undoLastRallyWinner();
+                }
+                // 0 - Jump 400 frames
+                else if (e.key === '0' && !waitingForServer) {
                     e.preventDefault();
                     navigateCourtFrames(400);
-                } else if (e.key === ' ') {
+                }
+                // Spacebar - Play/pause
+                else if (e.key === ' ') {
                     e.preventDefault();
-                    if (courtVideoEl && courtVideoEl.readyState >= 2) {
+                    // Play/pause court video - use readyState >= 1 for faster response
+                    // readyState 1 = HAVE_METADATA (enough to start playing)
+                    if (courtVideoEl && courtVideoEl.readyState >= 1) {
                         if (courtVideoEl.paused) {
-                            courtVideoEl.play();
+                            courtVideoEl.play().catch(err => {
+                                console.log('Court video play prevented:', err.message);
+                            });
                         } else {
                             courtVideoEl.pause();
                         }
