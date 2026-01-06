@@ -7521,9 +7521,15 @@
         // Process a landing zone click (main one-click flow)
         function processLandingZone(zone, player) {
             selectedToZone = zone;
-            
-            // Infer shot type from FROM zone (already set) and TO zone
-            const shotType = inferShotType(selectedFromZone, selectedToZone);
+
+            // Use overridden shot type if set, otherwise infer from zones
+            let shotType;
+            if (overriddenShotType) {
+                shotType = overriddenShotType;
+                console.log('Using overridden shot type:', shotType);
+            } else {
+                shotType = inferShotType(selectedFromZone, selectedToZone);
+            }
             
             // Update display
             document.getElementById('toZoneDisplay').textContent = formatZoneName(selectedToZone);
@@ -7556,11 +7562,20 @@
         function setupNextShot(fromZone) {
             // Switch hitter
             currentHitter = currentHitter === 'P1' ? 'P2' : 'P1';
-            
+
             // Set the FROM zone for next shot
             selectedFromZone = fromZone;
             selectedToZone = null;
-            
+
+            // Reset shot override
+            overriddenShotType = null;
+            courtComboBuffer = '';
+            if (courtComboTimeout) {
+                clearTimeout(courtComboTimeout);
+                courtComboTimeout = null;
+            }
+            hideCourtComboIndicator();
+
             // Update display
             document.getElementById('fromZoneDisplay').textContent = formatZoneName(selectedFromZone);
             document.getElementById('fromZoneDisplay').classList.remove('pending');
