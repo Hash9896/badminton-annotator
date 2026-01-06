@@ -6686,11 +6686,13 @@
                         baseShot = 'push';
                     }
                 } else { // back
-                    // Front → Back: ↓ nettap, ↑ lift, DEFAULT lift
+                    // Front → Back: ↓ nettap, → push, ↑ lift
                     if (trajectory === -1) {
                         baseShot = 'nettap';
-                    } else {
+                    } else if (trajectory === 1) {
                         baseShot = 'lift';
+                    } else {
+                        baseShot = 'push';
                     }
                 }
             }
@@ -6713,11 +6715,13 @@
                         baseShot = 'flatgame';
                     }
                 } else { // back
-                    // Mid → Back: ↓ drive, ↑ clear, DEFAULT clear
+                    // Mid → Back: ↓ smash, → drive, ↑ clear
                     if (trajectory === -1) {
-                        baseShot = 'drive';
-                    } else {
+                        baseShot = 'smash';
+                    } else if (trajectory === 1) {
                         baseShot = 'clear';
+                    } else {
+                        baseShot = 'drive';
                     }
                 }
             }
@@ -6731,13 +6735,13 @@
                         baseShot = 'drop';
                     }
                 } else if (toCat === 'mid') {
-                    // Back → Mid: ↓ drive, → smash, ↑ clear
+                    // Back → Mid: ↓ smash, → drive, ↑ clear
                     if (trajectory === -1) {
-                        baseShot = 'drive';
+                        baseShot = 'smash';
                     } else if (trajectory === 1) {
                         baseShot = 'clear';
                     } else {
-                        baseShot = 'smash';
+                        baseShot = 'drive';
                     }
                 } else { // back
                     // Back → Back: DEFAULT clear (all trajectories)
