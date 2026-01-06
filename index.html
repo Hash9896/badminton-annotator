@@ -217,6 +217,53 @@
             font-size: 20px;
         }
 
+        /* Court Combo Indicator (shows typed combo for shot override) */
+        .court-combo-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(46, 204, 113, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .court-combo-indicator.visible {
+            opacity: 1;
+        }
+
+        .court-combo-indicator.pending {
+            background: rgba(241, 196, 15, 0.95);
+        }
+
+        .court-combo-indicator.matched {
+            background: rgba(46, 204, 113, 0.95);
+        }
+
+        .court-combo-indicator.error {
+            background: rgba(231, 76, 60, 0.95);
+        }
+
+        .court-combo-indicator .combo-keys {
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .court-combo-indicator .combo-shot {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
         .info-panel {
             width: 100%;
             display: flex;
@@ -2792,14 +2839,20 @@
                             <!-- Shot Toast Overlay (brief notification for each shot) -->
                             <div class="shot-toast" id="shotToast"></div>
 
+                            <!-- Court Combo Indicator (shows typed combo for shot override) -->
+                            <div class="court-combo-indicator" id="courtComboIndicator">
+                                <div class="combo-keys"></div>
+                                <div class="combo-shot"></div>
+                            </div>
+
                             <div class="video-info">
                                 <div class="video-info-left">
                                     <div>Frame: <span id="courtFrameNumber">0</span></div>
                                     <div>Time: <span id="courtCurrentTime">0.00</span>s</div>
                                 </div>
                                 <div class="frame-controls">
-                                    <span>↑↓→: Traj</span>
-                                    <span>c/v: ±10</span>
+                                    <span>8/9: ±1f</span>
+                                    <span>c/v: ±10f</span>
                                     <span>&lt;&gt;: Tags</span>
                                 </div>
                             </div>
@@ -3149,16 +3202,44 @@
                         <tr><td><kbd>Space</kbd></td><td>Play/Pause video</td></tr>
                         <tr><td><kbd>1</kbd></td><td>P1 wins rally</td></tr>
                         <tr><td><kbd>2</kbd></td><td>P2 wins rally</td></tr>
+                        <tr><td><kbd>8</kbd></td><td>Previous frame (−1)</td></tr>
+                        <tr><td><kbd>9</kbd></td><td>Next frame (+1)</td></tr>
+                        <tr><td><kbd>c/v</kbd></td><td>Navigate ±10 frames *</td></tr>
                         <tr><td><kbd>&lt;</kbd></td><td>Previous annotation</td></tr>
                         <tr><td><kbd>&gt;</kbd></td><td>Next annotation</td></tr>
-                        <tr><td><kbd>↑</kbd></td><td>Upward trajectory</td></tr>
-                        <tr><td><kbd>→</kbd></td><td>Flat trajectory</td></tr>
-                        <tr><td><kbd>↓</kbd></td><td>Downward trajectory</td></tr>
-                        <tr><td><kbd>D</kbd></td><td>Dribble (during shot)</td></tr>
-                        <tr><td><kbd>B</kbd></td><td>Toggle backhand mode</td></tr>
-                        <tr><td><kbd>Z</kbd></td><td>Undo last shot</td></tr>
-                        <tr><td><kbd>Esc</kbd></td><td>Cancel current action</td></tr>
+                        <tr><td><kbd>↑ ↓ →</kbd></td><td>Trajectory (up/down/flat)</td></tr>
+                        <tr><td><kbd>B</kbd></td><td>Toggle backhand mode *</td></tr>
+                        <tr><td><kbd>D</kbd></td><td>Toggle dribble mode *</td></tr>
+                        <tr><td><kbd>U</kbd></td><td>Undo last rally winner *</td></tr>
+                        <tr><td><kbd>Bksp</kbd></td><td>Undo last shot</td></tr>
+                        <tr><td><kbd>Esc</kbd></td><td>Cancel/Clear combo</td></tr>
                     </table>
+                    <p style="font-size: 10px; color: #888; margin-top: 6px;">
+                        * Disabled during combo mode (after clicking FROM zone). Use 8/9 for frames.
+                    </p>
+                </div>
+
+                <div class="help-section">
+                    <h3>Shot Type Override (Combos)</h3>
+                    <p style="font-size: 12px; color: #555; margin-bottom: 8px;">
+                        After clicking FROM zone, type a combo to override auto-detected shot type:
+                    </p>
+                    <table class="help-shortcuts-table">
+                        <tr><td><kbd>fs</kbd></td><td>Forehand Smash</td></tr>
+                        <tr><td><kbd>fc</kbd></td><td>Forehand Clear</td></tr>
+                        <tr><td><kbd>fd</kbd></td><td>Forehand Drop</td></tr>
+                        <tr><td><kbd>fl</kbd></td><td>Forehand Lift</td></tr>
+                        <tr><td><kbd>fp</kbd></td><td>Forehand Push</td></tr>
+                        <tr><td><kbd>fdr</kbd></td><td>Forehand Drive</td></tr>
+                        <tr><td><kbd>fdf</kbd></td><td>Forehand Defense</td></tr>
+                        <tr><td><kbd>fnk</kbd></td><td>Forehand Net Keep</td></tr>
+                        <tr><td><kbd>fdb</kbd></td><td>Forehand Dribble</td></tr>
+                        <tr><td><kbd>bs/bc/bd...</kbd></td><td>Backhand (same pattern)</td></tr>
+                        <tr><td><kbd>os/oc/od</kbd></td><td>Overhead Smash/Clear/Drop</td></tr>
+                    </table>
+                    <p style="font-size: 10px; color: #888; margin-top: 6px;">
+                        Combo mode activates after clicking FROM zone. Press Esc to cancel.
+                    </p>
                 </div>
 
                 <div class="help-section">
@@ -5292,6 +5373,11 @@
         let selectedFromZone = null;
         let selectedToZone = null;
         let currentRallyShots = [];
+
+        // Shot Override State (for manual shot type override via keyboard combos)
+        let overriddenShotType = null;
+        let courtComboBuffer = '';
+        let courtComboTimeout = null;
         
         // Canvas Mode State
         let isCalibrated = false;
@@ -7088,9 +7174,15 @@
                 defaultTrajectory = getDefaultTrajectory(selectedFromZone, selectedToZone);
                 currentTrajectory = defaultTrajectory;
             }
-            
-            // Infer shot type with trajectory
-            const shotType = inferShotTypeWithTrajectory(selectedFromZone, selectedToZone, currentTrajectory);
+
+            // Use overridden shot type if set, otherwise infer from zones
+            let shotType;
+            if (overriddenShotType) {
+                shotType = overriddenShotType;
+                console.log('Using overridden shot type:', shotType);
+            } else {
+                shotType = inferShotTypeWithTrajectory(selectedFromZone, selectedToZone, currentTrajectory);
+            }
             
             // Update display
             document.getElementById('toZoneDisplay').textContent = formatZoneName(selectedToZone);
@@ -7127,10 +7219,17 @@
             toCoords = null;
             toMarker = null;
             
-            // Reset trajectory
+            // Reset trajectory and shot override
             trajectoryOverridden = false;
             defaultTrajectory = 0;
             currentTrajectory = 0;
+            overriddenShotType = null;
+            courtComboBuffer = '';
+            if (courtComboTimeout) {
+                clearTimeout(courtComboTimeout);
+                courtComboTimeout = null;
+            }
+            hideCourtComboIndicator();
             
             // Calculate FROM coordinates from zone center (approximate)
             const fromCoordApprox = getZoneCenterCoords(fromZone);
@@ -8445,6 +8544,17 @@
             
             // Escape - Cancel
             if (e.key === 'Escape') {
+                // Clear any pending combo first
+                if (courtComboBuffer) {
+                    courtComboBuffer = '';
+                    overriddenShotType = null;
+                    if (courtComboTimeout) {
+                        clearTimeout(courtComboTimeout);
+                        courtComboTimeout = null;
+                    }
+                    hideCourtComboIndicator();
+                    return;
+                }
                 if (isCalibrating) {
                     document.getElementById('calibrationOverlay').style.display = 'none';
                     isCalibrating = false;
@@ -8469,6 +8579,10 @@
             // Keyboard controls for court mode
             if (!isInput) {
                 const courtVideoEl = document.getElementById('courtVideoPlayer');
+
+                // Check if we're in "combo mode" - waiting for landing zone after selecting from zone
+                // In this mode, letter keys should go to combo processing, not special shortcuts
+                const inComboMode = rallyInProgress && selectedFromZone && !selectedToZone;
 
                 // Arrow keys - Trajectory selection (when waiting for landing zone)
                 if (e.key === 'ArrowUp') {
@@ -8495,36 +8609,44 @@
                     e.preventDefault();
                     jumpToCourtNextAnnotation();
                 }
-                // C/V - Jump 10 frames
-                else if (e.key === 'c' || e.key === 'C') {
+                // C/V - Jump 10 frames (disabled in combo mode - use 8/9 for frame nav during shots)
+                else if ((e.key === 'c' || e.key === 'C') && !inComboMode) {
                     e.preventDefault();
                     navigateCourtFrames(-10);
-                } else if (e.key === 'v' || e.key === 'V') {
+                } else if ((e.key === 'v' || e.key === 'V') && !inComboMode) {
                     e.preventDefault();
                     navigateCourtFrames(10);
                 }
-                // B - Toggle Zone 6/4 backhand mode (before clicking TO zone)
-                else if (e.key === 'b' || e.key === 'B') {
+                // B - Toggle Zone 6/4 backhand mode (disabled in combo mode - toggle before clicking from zone)
+                else if ((e.key === 'b' || e.key === 'B') && !inComboMode) {
                     e.preventDefault();
-                    if (rallyInProgress && selectedFromZone) {
-                        zone6Mode = (zone6Mode === 'overhead') ? 'backhand' : 'overhead';
-                        updateModeIndicators();
-                        console.log('Zone 6 mode:', zone6Mode);
-                    }
+                    // Toggle backhand mode (works when rally is in progress but before selecting from zone)
+                    zone6Mode = (zone6Mode === 'overhead') ? 'backhand' : 'overhead';
+                    updateModeIndicators();
+                    console.log('Zone 6 mode:', zone6Mode);
                 }
-                // D - Dribble toggle (during shot only)
-                else if (e.key === 'd' || e.key === 'D') {
+                // D - Dribble toggle (disabled in combo mode - use 'fdb'/'bdb' combos for dribble shots)
+                else if ((e.key === 'd' || e.key === 'D') && !inComboMode) {
                     e.preventDefault();
-                    if (rallyInProgress && selectedFromZone) {
-                        dribbleMode = !dribbleMode;
-                        updateModeIndicators();
-                        console.log('Dribble mode:', dribbleMode);
-                    }
+                    // Toggle dribble mode (works when not in combo mode)
+                    dribbleMode = !dribbleMode;
+                    updateModeIndicators();
+                    console.log('Dribble mode:', dribbleMode);
                 }
-                // U - Undo last rally winner
-                else if ((e.key === 'u' || e.key === 'U') && !waitingForServer) {
+                // U - Undo last rally winner (disabled in combo mode)
+                else if ((e.key === 'u' || e.key === 'U') && !waitingForServer && !inComboMode) {
                     e.preventDefault();
                     undoLastRallyWinner();
+                }
+                // 8 - Single frame backward
+                else if (e.key === '8' && !waitingForServer) {
+                    e.preventDefault();
+                    navigateCourtFrames(-1);
+                }
+                // 9 - Single frame forward
+                else if (e.key === '9' && !waitingForServer) {
+                    e.preventDefault();
+                    navigateCourtFrames(1);
                 }
                 // 0 - Jump 400 frames
                 else if (e.key === '0' && !waitingForServer) {
@@ -8544,6 +8666,13 @@
                         } else {
                             courtVideoEl.pause();
                         }
+                    }
+                }
+                // Letter keys - shot type combo override (e.g., 'fd' for forehand drop)
+                // Only processed when from zone is selected and waiting for to zone
+                else if (/^[a-zA-Z]$/.test(e.key) && !isInput) {
+                    if (processCourtComboKey(e.key)) {
+                        e.preventDefault();
                     }
                 }
             }
@@ -8593,6 +8722,129 @@
             }
         }
         
+        // Court Combo Override Functions
+        // Mapping of short combos to shot types (using same combos as tagging mode)
+        const courtComboMap = new Map([
+            // Forehand shots
+            ['fs', 'forehand_smash'],
+            ['fc', 'forehand_clear'],
+            ['fdr', 'forehand_drive'],
+            ['fd', 'forehand_drop'],
+            ['fdf', 'forehand_defense'],
+            ['fpd', 'forehand_pulldrop'],
+            ['fnk', 'forehand_netkeep'],
+            ['fdb', 'forehand_dribble'],
+            ['fp', 'forehand_push'],
+            ['fnt', 'forehand_nettap'],
+            ['fl', 'forehand_lift'],
+            ['fb', 'forehand_block'],
+            ['ffg', 'forehand_flatgame'],
+            // Backhand shots
+            ['bs', 'backhand_smash'],
+            ['bc', 'backhand_clear'],
+            ['bdr', 'backhand_drive'],
+            ['bd', 'backhand_drop'],
+            ['bdf', 'backhand_defense'],
+            ['bpd', 'backhand_pulldrop'],
+            ['bnk', 'backhand_netkeep'],
+            ['bdb', 'backhand_dribble'],
+            ['bp', 'backhand_push'],
+            ['bnt', 'backhand_nettap'],
+            ['bl', 'backhand_lift'],
+            ['bb', 'backhand_block'],
+            ['bfg', 'backhand_flatgame'],
+            // Overhead shots
+            ['os', 'overhead_smash'],
+            ['oc', 'overhead_clear'],
+            ['od', 'overhead_drop'],
+            ['ohs', 'overhead_halfsmash'],
+        ]);
+
+        // Build prefix set for partial matching
+        const courtComboPrefixes = new Set();
+        for (const combo of courtComboMap.keys()) {
+            for (let i = 1; i < combo.length; i++) {
+                courtComboPrefixes.add(combo.substring(0, i));
+            }
+        }
+
+        function processCourtComboKey(key) {
+            // Only process when we have a from zone selected but no to zone yet
+            if (!selectedFromZone || selectedToZone) return false;
+            if (!rallyInProgress) return false;
+
+            const char = key.toLowerCase();
+            // Only accept letters
+            if (!/^[a-z]$/.test(char)) return false;
+
+            // Clear any pending timeout
+            if (courtComboTimeout) {
+                clearTimeout(courtComboTimeout);
+            }
+
+            // Add to buffer
+            courtComboBuffer += char;
+
+            // Check for exact match
+            if (courtComboMap.has(courtComboBuffer)) {
+                const shotType = courtComboMap.get(courtComboBuffer);
+                overriddenShotType = shotType;
+                showCourtComboIndicator(courtComboBuffer, shotType, 'matched');
+
+                // Auto-clear after 2 seconds if user doesn't click
+                courtComboTimeout = setTimeout(() => {
+                    // Don't clear if they haven't selected a zone yet
+                }, 2000);
+
+                console.log('Shot override set:', shotType);
+                return true;
+            }
+
+            // Check for prefix match (typing in progress)
+            if (courtComboPrefixes.has(courtComboBuffer)) {
+                showCourtComboIndicator(courtComboBuffer, null, 'pending');
+
+                // Auto-clear after 1.5 seconds of no input
+                courtComboTimeout = setTimeout(() => {
+                    courtComboBuffer = '';
+                    overriddenShotType = null;
+                    hideCourtComboIndicator();
+                }, 1500);
+
+                return true;
+            }
+
+            // No match - show error briefly then clear
+            showCourtComboIndicator(courtComboBuffer, null, 'error');
+            courtComboTimeout = setTimeout(() => {
+                courtComboBuffer = '';
+                overriddenShotType = null;
+                hideCourtComboIndicator();
+            }, 500);
+
+            return true;
+        }
+
+        function showCourtComboIndicator(combo, shotType, status) {
+            const indicator = document.getElementById('courtComboIndicator');
+            if (!indicator) return;
+
+            const keysEl = indicator.querySelector('.combo-keys');
+            const shotEl = indicator.querySelector('.combo-shot');
+
+            keysEl.textContent = combo.toUpperCase();
+            shotEl.textContent = shotType ? formatShotName(shotType) : (status === 'pending' ? 'typing...' : 'invalid');
+
+            indicator.className = 'court-combo-indicator visible ' + status;
+        }
+
+        function hideCourtComboIndicator() {
+            const indicator = document.getElementById('courtComboIndicator');
+            if (indicator) {
+                indicator.classList.remove('visible');
+            }
+        }
+
         // Navigate frames for court video
         function navigateCourtFrames(delta) {
             const courtVideoEl = document.getElementById('courtVideoPlayer');
