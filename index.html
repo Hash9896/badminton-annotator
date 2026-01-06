@@ -6713,9 +6713,9 @@
                         baseShot = 'flatgame';
                     }
                 } else { // back
-                    // Mid → Back: ↓ smash, ↑ clear, DEFAULT clear
+                    // Mid → Back: ↓ drive, ↑ clear, DEFAULT clear
                     if (trajectory === -1) {
-                        baseShot = 'smash';
+                        baseShot = 'drive';
                     } else {
                         baseShot = 'clear';
                     }
@@ -6731,8 +6731,10 @@
                         baseShot = 'drop';
                     }
                 } else if (toCat === 'mid') {
-                    // Back → Mid: ↓ smash, ↑ clear, DEFAULT smash
-                    if (trajectory === 1) {
+                    // Back → Mid: ↓ drive, → smash, ↑ clear
+                    if (trajectory === -1) {
+                        baseShot = 'drive';
+                    } else if (trajectory === 1) {
                         baseShot = 'clear';
                     } else {
                         baseShot = 'smash';
