@@ -7181,15 +7181,23 @@
                 currentTrajectory = defaultTrajectory;
             }
 
+            // Capture override value immediately (before any async operations)
+            const capturedOverride = overriddenShotType;
+
             // Use overridden shot type if set, otherwise infer from zones
             let shotType;
-            if (overriddenShotType) {
-                shotType = overriddenShotType;
+            if (capturedOverride) {
+                shotType = capturedOverride;
                 console.log('Using overridden shot type:', shotType);
+                // Clear override immediately after capturing
+                overriddenShotType = null;
+                courtComboBuffer = '';
+                hideCourtComboIndicator();
             } else {
                 shotType = inferShotTypeWithTrajectory(selectedFromZone, selectedToZone, currentTrajectory);
+                console.log('Using inferred shot type:', shotType, 'from:', selectedFromZone, 'to:', selectedToZone);
             }
-            
+
             // Update display
             document.getElementById('toZoneDisplay').textContent = formatZoneName(selectedToZone);
             document.getElementById('toZoneDisplay').classList.remove('pending');
@@ -7528,15 +7536,23 @@
         function processLandingZone(zone, player) {
             selectedToZone = zone;
 
+            // Capture override value immediately (before any async operations)
+            const capturedOverride = overriddenShotType;
+
             // Use overridden shot type if set, otherwise infer from zones
             let shotType;
-            if (overriddenShotType) {
-                shotType = overriddenShotType;
+            if (capturedOverride) {
+                shotType = capturedOverride;
                 console.log('Using overridden shot type:', shotType);
+                // Clear override immediately after capturing
+                overriddenShotType = null;
+                courtComboBuffer = '';
+                hideCourtComboIndicator();
             } else {
                 shotType = inferShotType(selectedFromZone, selectedToZone);
+                console.log('Using inferred shot type:', shotType, 'from:', selectedFromZone, 'to:', selectedToZone);
             }
-            
+
             // Update display
             document.getElementById('toZoneDisplay').textContent = formatZoneName(selectedToZone);
             document.getElementById('toZoneDisplay').classList.remove('pending');
@@ -8017,49 +8033,63 @@
                 alert('Cannot undo previous rally. Use Cancel to discard current rally.');
                 return;
             }
-            
+
             // Remove last shot from current rally
             const lastShot = currentRallyShots.pop();
             courtAnnotations.pop();
             currentShotNum--;
-            
-            // Restore state to before this shot
+
+            // Restore hitter to who made the deleted shot
             currentHitter = lastShot.player;
-            selectedFromZone = lastShot.fromZone;
             selectedToZone = null;
 
-            // Update displays
+            // Clear any pending override (user is re-entering this shot)
+            overriddenShotType = null;
+            courtComboBuffer = '';
+            if (courtComboTimeout) {
+                clearTimeout(courtComboTimeout);
+                courtComboTimeout = null;
+            }
+            hideCourtComboIndicator();
+
+            // Update displays based on remaining shots
             if (currentRallyShots.length === 0) {
-                // Back to serve state
+                // Back to serve state - need two-click flow (FROM then TO)
+                isServing = true;
+                selectedFromZone = null; // Reset so serve flow asks for FROM zone first
+
                 document.getElementById('p1WonBtn').style.display = 'none';
                 document.getElementById('p2WonBtn').style.display = 'none';
-                
+
                 const serverScore = currentServer === 'P1' ? p1Score : p2Score;
                 const isEven = serverScore % 2 === 0;
-                
+
                 document.getElementById('fromZoneDisplay').textContent = `Serve (${isEven ? 'Even' : 'Odd'})`;
-                document.getElementById('fromZoneDisplay').classList.remove('pending');
+                document.getElementById('fromZoneDisplay').classList.add('pending');
                 document.getElementById('toZoneDisplay').textContent = 'Click serve landing...';
                 document.getElementById('toZoneDisplay').classList.add('pending');
                 document.getElementById('shotTypeDisplay').style.display = 'none';
-                
+
                 highlightServeLandingZones(currentServer, isEven);
             } else {
-                // Restore to previous shot's landing as FROM
+                // Restore to previous shot's landing as FROM (one-click flow)
                 const prevShot = currentRallyShots[currentRallyShots.length - 1];
                 const fromZone = mapLandingToNextFrom(prevShot.toZone);
-                
+                selectedFromZone = fromZone;
+
                 document.getElementById('fromZoneDisplay').textContent = formatZoneName(fromZone);
                 document.getElementById('fromZoneDisplay').classList.remove('pending');
                 document.getElementById('toZoneDisplay').textContent = 'Click landing...';
                 document.getElementById('toZoneDisplay').classList.add('pending');
                 document.getElementById('shotTypeDisplay').style.display = 'none';
-                
-                selectedFromZone = fromZone;
+
                 clearZoneHighlights();
                 highlightValidLandingZones();
             }
-            
+
+            // Update compact shot bar
+            updateCompactShotBar();
+
             updateRallyLog();
             updateShotTagsOverlay();
             saveCourtData();
