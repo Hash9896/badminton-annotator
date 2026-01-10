@@ -6744,8 +6744,14 @@
                         baseShot = 'drive';
                     }
                 } else { // back
-                    // Back → Back: DEFAULT clear (all trajectories)
-                    baseShot = 'clear';
+                    // Back → Back: ↓ smash, → drive, ↑ clear
+                    if (trajectory === -1) {
+                        baseShot = 'smash';
+                    } else if (trajectory === 1) {
+                        baseShot = 'clear';
+                    } else {
+                        baseShot = 'drive';
+                    }
                 }
             }
 
