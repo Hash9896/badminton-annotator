@@ -6247,7 +6247,23 @@
                 return isFH ? ('5' + suffix) : ('6' + suffix);
             }
         }
-        
+
+        // Check if coordinates are out of bounds
+        function isOutOfBounds(x, y) {
+            return x < 0 || x > COURT_WIDTH || y < 0 || y > COURT_LENGTH;
+        }
+
+        // Get the nearest valid zone for out-of-bounds coordinates
+        // Clamps coordinates to the court boundary and returns the corresponding zone
+        function getNearestZoneFromCoords(x, y) {
+            // Clamp coordinates to court boundaries
+            const clampedX = Math.max(0, Math.min(COURT_WIDTH, x));
+            const clampedY = Math.max(0, Math.min(COURT_LENGTH, y));
+
+            // Use standard zone detection with clamped coordinates
+            return getZoneFromCoords(clampedX, clampedY);
+        }
+
         // Toggle debug overlay
         function toggleDebugOverlay() {
             showDebugOverlay = !showDebugOverlay;
@@ -7101,21 +7117,26 @@
             // Round to 10cm
             const x = roundTo10cm(courtCoords.x);
             const y = roundTo10cm(courtCoords.y);
-            
-            // Validate coordinates are within court bounds
-            if (x < 0 || x > COURT_WIDTH || y < 0 || y > COURT_LENGTH) {
-                showToast({ name: 'Click inside the court' }, false);
-                return;
-            }
-            
-            // Get zone from coordinates
-            const zone = getZoneFromCoords(x, y);
-            const player = y < NET_Y ? 'P2' : 'P1';
+
+            // Check if click is out of bounds
+            const outOfBounds = isOutOfBounds(x, y);
+
+            // Get zone from coordinates (use nearest zone for out-of-bounds)
+            const zone = outOfBounds ? getNearestZoneFromCoords(x, y) : getZoneFromCoords(x, y);
+
+            // Determine player side using clamped Y for out-of-bounds
+            const clampedY = Math.max(0, Math.min(COURT_LENGTH, y));
+            const player = clampedY < NET_Y ? 'P2' : 'P1';
 
             // SERVE FLOW: Two-click (FROM zone then TO zone)
             if (isServing) {
                 // First click: Select FROM zone (server position)
                 if (!selectedFromZone) {
+                    // Server position must be on court (no out-of-bounds)
+                    if (outOfBounds) {
+                        showToast({ name: 'Server must be on court' }, false);
+                        return;
+                    }
                     // Validate: must be on server's side
                     const serverSide = currentServer;
                     if (player !== serverSide) {
@@ -7149,9 +7170,10 @@
                 }
 
                 // Second click: Select TO zone (serve landing)
-                // Validate: must be on opponent's side
+                // Out-of-bounds serves are allowed (fault/out serve)
+                // Validate: must be on opponent's side (use clamped position for check)
                 const opponentSide = currentServer === 'P1' ? 'P2' : 'P1';
-                if (player !== opponentSide) {
+                if (!outOfBounds && player !== opponentSide) {
                     showToast({ name: 'Click on opponent\'s side' }, false);
                     return;
                 }
@@ -7159,12 +7181,12 @@
                 // Store coordinates and process serve landing
                 toCoords = { x, y };
                 toMarker = { x: pixelX, y: pixelY };
-                processCanvasLandingZone(zone, player, x, y, pixelX, pixelY);
+                processCanvasLandingZone(zone, player, x, y, pixelX, pixelY, outOfBounds);
                 return;
             }
 
-            // REGULAR SHOT FLOW: Validate landing zone
-            if (!isValidLandingZone(zone, player)) {
+            // REGULAR SHOT FLOW: Validate landing zone (skip for out-of-bounds)
+            if (!outOfBounds && !isValidLandingZone(zone, player)) {
                 showToast({ name: 'Invalid landing zone' }, false);
                 return;
             }
@@ -7173,14 +7195,14 @@
             toCoords = { x, y };
             toMarker = { x: pixelX, y: pixelY };
 
-            // Process the landing zone with coordinates
-            processCanvasLandingZone(zone, player, x, y, pixelX, pixelY);
+            // Process the landing zone with coordinates (pass outOfBounds flag)
+            processCanvasLandingZone(zone, player, x, y, pixelX, pixelY, outOfBounds);
         }
         
         // Process canvas landing zone click
-        function processCanvasLandingZone(zone, player, courtX, courtY, pixelX, pixelY) {
+        function processCanvasLandingZone(zone, player, courtX, courtY, pixelX, pixelY, outOfBounds = false) {
             selectedToZone = zone;
-            
+
             // Get trajectory (default or overridden)
             if (!trajectoryOverridden) {
                 defaultTrajectory = getDefaultTrajectory(selectedFromZone, selectedToZone);
@@ -7204,8 +7226,15 @@
                 console.log('Using inferred shot type:', shotType, 'from:', selectedFromZone, 'to:', selectedToZone);
             }
 
-            // Update display
-            document.getElementById('toZoneDisplay').textContent = formatZoneName(selectedToZone);
+            // Add _out suffix for out-of-bounds shots
+            if (outOfBounds) {
+                shotType = shotType + '_out';
+                console.log('Shot marked as out:', shotType);
+            }
+
+            // Update display (show zone as "OUT" for out-of-bounds)
+            const displayZone = outOfBounds ? formatZoneName(zone) + ' (OUT)' : formatZoneName(zone);
+            document.getElementById('toZoneDisplay').textContent = displayZone;
             document.getElementById('toZoneDisplay').classList.remove('pending');
             document.getElementById('toCoordsDisplay').textContent = `(${courtX.toFixed(1)}m, ${courtY.toFixed(1)}m)`;
             document.getElementById('toCoordsDisplay').style.display = 'inline';
@@ -7216,13 +7245,13 @@
             // Update trajectory display and compact bar
             updateTrajectoryDisplay();
             updateCompactShotBar();
-            
+
             // Draw markers on canvas
             drawCourtOverlay();
-            
+
             // Add the shot (includes trajectory)
             addCanvasCourtShot(shotType, courtX, courtY);
-            
+
             // Determine next FROM zone and set up for next shot
             const nextFromZone = mapLandingToNextFrom(zone);
             setupNextCanvasShot(nextFromZone);
